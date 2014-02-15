@@ -2,6 +2,8 @@
  * sorted-list.c
  */
 
+#include	<stdio.h>
+#include	<stdlib.h>
 #include	<string.h>
 #include	"sorted-list.h"
 
@@ -29,6 +31,20 @@ int compareStrings(void *p1, void *p2)
 	return strcmp(s1, s2);
 }
 
-int main()
-{
+int main(int argc, char** argv)
+{ //integer test
+	int testList = {5,5,5,5,5};
+	int *intPtr;
+
+	SortedListPtr sl = SLCreate(compareInts, NULL);
+
+	//SLInsert(sl, intPtr);
+
+	SortedListIteratorPtr iterator = SLCreateIterator(sl);
+
+	//printf("%d\n",SLNextItem(iterator));
+
+
+	SLDestroy(sl);
+	SLDestroyIterator(iterator);
 }
