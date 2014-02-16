@@ -58,21 +58,16 @@ int main(int argc, char** argv)
 	
 	//***************** STRING TEST ***********************
 	int i;
-	char* string1 = "Hey";
-	char* string2 = "Boy";
-	char* string3 = "Zeus";
-	char* stringPtr = (char*) malloc(sizeof(string3));
+	const char* stringList[] = {"Hey", "Boy", "Zeus", "world", " ", "blah", " zzz", "aaa"};
+
+	char* stringPtr = (char*) malloc(sizeof(stringList));
 
 	SortedListPtr stringsl = SLCreate(compareStrings, NULL);
-
-	SLInsert(stringsl, string1);
-	SLInsert(stringsl, string2);
-	SLInsert(stringsl, string3);
 	
-	/*for(i=0; i<(sizeof(stringList)/sizeof(stringList[0])); i++){
+	for(i=0; i<(sizeof(stringList)/sizeof(stringList[0])); i++){
 		stringPtr = (char*) stringList[i];
-		SLInsert(sl, stringPtr);
-	}*/
+		SLInsert(stringsl, stringPtr);
+	}
 
 	SortedListIteratorPtr stringiterator = SLCreateIterator(stringsl);
 
