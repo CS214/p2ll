@@ -32,18 +32,24 @@ int compareStrings(void *p1, void *p2)
 }
 
 int main(int argc, char** argv)
-{ //integer test
-	int testList = {5,5,5,5,5};
+{
+	 //***************** INTEGER TEST ***********************
+	int testList[] = {-6, -6, 5, 7, 2, 10, 1 ,5 ,3 ,3};
+	int i;
 	int *intPtr;
 
 	SortedListPtr sl = SLCreate(compareInts, NULL);
-
-	//SLInsert(sl, intPtr);
+	
+	for(i=0; i<(sizeof(testList)/sizeof(testList[0])); i++){
+		intPtr = (int*) testList[i];
+		SLInsert(sl, intPtr);
+	}
 
 	SortedListIteratorPtr iterator = SLCreateIterator(sl);
 
-	//printf("%d\n",SLNextItem(iterator));
-
+	while((intPtr = (int*)SLNextItem(iterator)) != NULL){
+		printf("%d\n", *intPtr);
+	}
 
 	SLDestroy(sl);
 	SLDestroyIterator(iterator);
