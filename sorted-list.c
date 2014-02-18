@@ -99,7 +99,37 @@ int SLInsert(SortedListPtr list, void *newObj){
 }
 
 int SLRemove(SortedListPtr list, void *newObj){ //NOT COMPLETED
-	return 0;
+
+	if(list == NULL)
+		return 0;
+	else if(list->comparator(list->head->data, newObj) == 0){
+		list->head = list->head->next;
+	}
+	else
+	{
+		NodePtr lagging = list->head;
+		NodePtr traverse = list->head.next;
+
+		while(traverse != NULL)
+		{
+			if(list->comparator(traverse->data, newObj) == 0)
+			{
+				lagging->next = traverse->next;
+				free(*traverse);
+				return 1;
+			}
+			else
+			{
+				lagging = traverse;
+				traverse = traverse->next;
+			}
+		}
+		if(list->comparator(lagging->data, newObj) == 0)
+		{
+			free(*lagging);
+			return 1;
+		}
+	}
 }
 
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list){

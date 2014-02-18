@@ -31,31 +31,8 @@ int compareStrings(void *p1, void *p2)
 	return strcmp(s1, s2);
 }
 
-int main(int argc, char** argv)
-{
-	 //***************** INTEGER TEST ***********************
-	/*int testList[] = {-6, -6, 5, 7, 2, 10, 1 ,5 ,3 ,3};
-	int i;
-	int *intPtr;
+int main(int argc, char** argv){
 
-	SortedListPtr sl = SLCreate(compareInts, NULL);
-	
-	for(i=0; i<(sizeof(testList)/sizeof(testList[0])); i++){
-		intPtr = &testList[i];
-		SLInsert(sl, intPtr);
-	}
-
-	SortedListIteratorPtr iterator = SLCreateIterator(sl);
-
-	intPtr = SLNextItem(iterator);
-
-	while((intPtr = (int*)SLNextItem(iterator)) != NULL){
-		printf("%d\n", *intPtr);
-	}
-
-	SLDestroy(sl);
-	SLDestroyIterator(iterator);*/
-	
 	//***************** STRING TEST ***********************
 	int i;
 	const char* stringList[] = {"Hey", "Boy", "Zeus", "world", " ", "blah", " zzz", "aaa"};
@@ -63,18 +40,31 @@ int main(int argc, char** argv)
 	char* stringPtr = (char*) malloc(sizeof(stringList));
 
 	SortedListPtr stringsl = SLCreate(compareStrings, NULL);
-	
+	/*
 	for(i=0; i<(sizeof(stringList)/sizeof(stringList[0])); i++){
 		stringPtr = (char*) stringList[i];
 		SLInsert(stringsl, stringPtr);
 	}
+	*/
+	SortedListIteratorPtr stringiterator2 = SLCreateIterator(stringsl);
+	SLNextItem(stringiterator2);
 
+	SLInsert(stringsl, "f");
+	SLInsert(stringsl, "d");
+	SLInsert(stringsl, "b");
+	//SLRemove(stringsl, "Apple");
+	
+	
+	
+	
 	SortedListIteratorPtr stringiterator = SLCreateIterator(stringsl);
 
 	while((stringPtr = (char*) SLNextItem(stringiterator)) != NULL){
 		printf("%s\n", stringPtr);
 	}
 
+	//cleans mess
+	free(stringPtr);
 	SLDestroy(stringsl);
 	SLDestroyIterator(stringiterator);
 }
