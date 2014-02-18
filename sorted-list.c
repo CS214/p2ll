@@ -21,19 +21,17 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
 void SLDestroy(SortedListPtr list){
 	if(list == NULL)
 		return; // dont do anything
-	else if(list->head == NULL){ //if list doesn't contain anything you onl have to free the pointer
-		free(list);
+	else{
+		NodePtr deleter;
+
+		while(list->head != NULL){ //delete all dynamically allocated nodes
+			deleter = list->head;
+			list->head = list->head->next;
+			free(deleter);
+		}
+
+		free(list); //then free the structure
 	}
-	else if(list->head->next == NULL){ //if list only has one object simply free that object and list
-		free(list->head);
-		free(list);
-	}
-	else{ //free every dynamically allocated node	
-		//NodePtr deleter = list->head;
-		//NodePtr newHead;
-		//finish this
-	}
-	
 }
 
 int SLInsert(SortedListPtr list, void *newObj){
@@ -102,20 +100,23 @@ int SLRemove(SortedListPtr list, void *newObj){ //NOT COMPLETED
 
 	if(list == NULL)
 		return 0;
+	else if(list->head == NULL)
+		return 0;
+	
 	else if(list->comparator(list->head->data, newObj) == 0){
 		list->head = list->head->next;
 	}
 	else
 	{
 		NodePtr lagging = list->head;
-		NodePtr traverse = list->head.next;
+		NodePtr traverse = list->head->next;
 
 		while(traverse != NULL)
 		{
 			if(list->comparator(traverse->data, newObj) == 0)
 			{
 				lagging->next = traverse->next;
-				free(*traverse);
+				free(traverse);
 				return 1;
 			}
 			else
@@ -126,10 +127,11 @@ int SLRemove(SortedListPtr list, void *newObj){ //NOT COMPLETED
 		}
 		if(list->comparator(lagging->data, newObj) == 0)
 		{
-			free(*lagging);
+			free(lagging);
 			return 1;
 		}
-	}
+	}	
+	return 0;
 }
 
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list){
@@ -149,33 +151,12 @@ void SLDestroyIterator(SortedListIteratorPtr iter){
 }
 
 void *SLNextItem(SortedListIteratorPtr iter){ //make sure all those cases are taken care of
-	if(iter->currentNode == NULL)
+	if(iter == NULL)
+		return NULL;
+	else if(iter->currentNode == NULL)
 		return NULL; //returning a null terminates the loop when printing the it
 	else{
-		/*void * dataReturned = iter->currentNode; //ints work
-		iter->currentNode = iter->nextNode;
-		if(iter->nextNode != NULL)
-			iter->nextNode = iter->nextNode->next;
-		
-		return dataReturned;*/
-
-		/*void * dataReturned = malloc(sizeof(iter->currentNode->data)); //ints work
-		dataReturned = &iter->currentNode->data;
-		iter->currentNode = iter->nextNode;
-		if(iter->nextNode != NULL)
-			iter->nextNode = iter->nextNode->next;
-		
-		return dataReturned;
-
-		/*void * dataReturned = (void *) malloc(sizeof(iter->currentNode->data)); //strings work
-		dataReturned = iter->currentNode->data;
-		iter->currentNode = iter->nextNode;
-		if(iter->nextNode != NULL)
-			iter->nextNode = iter->nextNode->next;
-		
-		return dataReturned;*/
-
-		void * dataReturned = malloc(sizeof(iter->currentNode->data)); //ints work
+		void * dataReturned = malloc(sizeof(iter->currentNode->data));
 		dataReturned = iter->currentNode->data;
 		iter->currentNode = iter->nextNode;
 		if(iter->nextNode != NULL)
